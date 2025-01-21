@@ -16,6 +16,7 @@ def read_input(file_path: str) -> list[str]:
             return file.readlines()
     except (FileNotFoundError, PermissionError) as e:
         print(f"Error reading file {file_path}: {e}")
+
         raise
 
 
@@ -26,7 +27,7 @@ def compute_input(input_content: list[str]) -> tuple[list[int], list[int]]:
         input_content (list[str]): List of strings containing space-separated numbers
 
     Returns:
-        Tuple[list[int], list[int]]: Tuple containing two lists of integers:
+        tuple[list[int], list[int]]: Tuple containing two lists of integers:
             - First list: Left values parsed from input
             - Second list: Right values parsed from input
     """
@@ -35,6 +36,7 @@ def compute_input(input_content: list[str]) -> tuple[list[int], list[int]]:
 
     for line in input_content:
         line = line.strip().split()
+
         left_values.append(int(line[0]))
         right_values.append(int(line[1]))
 
@@ -67,7 +69,9 @@ if __name__ == "__main__":
         input_content = read_input(FILE_NAME)
         number_pairs = compute_input(input_content)
         result = calculate_total(number_pairs)
+
         print(result)
     except Exception as e:
         print(f"Program failed: {e}")
+
         exit(1)
