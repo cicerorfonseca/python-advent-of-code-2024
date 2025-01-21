@@ -1,43 +1,73 @@
-file_name = 'input.txt' # 3574690
-file_name_example = 'input.txt' # 11
+def read_input(file_path: str) -> list[str]:
+    """Read lines from a file and return the content as a list
 
-# Reads the file content and returns it as a list
-def read_input(file_name: str) -> list[str]:
-  try:
-    with open(file_name) as file:
-      data = file.readlines()
+    Args:
+      file_path (str): Path to the input file
 
-      return data
-  except Exception as e:
-    print(e)
+    Returns:
+      list[str]: List of strings, each item as a line from the file
 
-# Formats and joins all lines then splits the numbers between two lists
+    Raises:
+      FileNotFoundError: If the file does not exist
+      PermissionError: If the file cannot be accessed
+    """
+    try:
+        with open(file_path) as file:
+            return file.readlines()
+    except (FileNotFoundError, PermissionError) as e:
+        print(f"Error reading file {file_path}: {e}")
+        raise
+
+
 def compute_input(input_content: list[str]) -> tuple[list[int], list[int]]:
-  list_l = []
-  list_r = []
+    """Parse input lines and split numbers into two lists
 
-  for line in input_content:
-    # Join all numbers and split them into indexes
-    line = ''.join(line).split()
-    # Append number to each list
-    list_l.append(int(line[1]))
-    list_r.append(int(line[0]))
+    Args:
+        input_content (list[str]): List of strings containing space-separated numbers
 
-  return (list_r, list_l)
+    Returns:
+        Tuple[list[int], list[int]]: Tuple containing two lists of integers:
+            - First list: Left values parsed from input
+            - Second list: Right values parsed from input
+    """
+    left_values = []
+    right_values = []
 
-def calculate_total(lists: tuple[list[int],list[int]]) -> int:
-  lists[0].sort()
-  lists[1].sort()
-  total = 0
+    for line in input_content:
+        line = line.strip().split()
+        left_values.append(int(line[0]))
+        right_values.append(int(line[1]))
 
-  for i, val_l in enumerate(lists[0]):
-      total += abs(val_l - lists[1][i])
+    return (left_values, right_values)
 
-  return total
 
-# Main
-if __name__=="__main__":
-  input_content = read_input(file_name)
-  lists = compute_input(input_content)
+def calculate_total(number_pairs: tuple[list[int], list[int]]) -> int:
+    """Calculate total absolute difference between sorted pairs
 
-  print(calculate_total(lists))
+    Args:
+        number_pairs (tuple[list[int], list[int]]): Tuple containing two lists of integers:
+            - First list: Left numbers to be paired
+            - Second list: Right numbers to be paired
+
+    Returns:
+        int: Sum of absolute differences between paired numbers
+    """
+    left_nums, right_nums = number_pairs
+    left_nums.sort()
+    right_nums.sort()
+
+    return sum(abs(left - right) for left, right in zip(left_nums, right_nums))
+
+
+if __name__ == "__main__":
+    FILE_NAME = "input.txt"  # 3574690
+    FILENAME_EXAMPLE = "input-example.txt"  # 11
+
+    try:
+        input_content = read_input(FILE_NAME)
+        number_pairs = compute_input(input_content)
+        result = calculate_total(number_pairs)
+        print(result)
+    except Exception as e:
+        print(f"Program failed: {e}")
+        exit(1)
