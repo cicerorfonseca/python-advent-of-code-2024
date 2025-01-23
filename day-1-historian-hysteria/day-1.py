@@ -73,22 +73,20 @@ def calculate_similarity(number_pairs: tuple[list[int], list[int]]) -> int:
         int: Sum of the similarity score of each number on the left list
     """
     left_nums, right_nums = number_pairs
-    similarity_score = 0
+    right_num_counts = {}
 
-    for i, left_num in enumerate(left_nums):
-        num_count = 0
+    for right_num in right_nums:
+        right_num_counts[right_num] = right_num_counts.get(right_num, 0) + 1
 
-        for right_num in right_nums:
-            if left_num == right_num:
-                num_count += 1
-            
-        similarity_score += left_num * num_count
+    similarity_score = sum(
+        left_num * right_num_counts.get(left_num, 0) for left_num in left_nums
+    )
 
     return similarity_score
 
 
 if __name__ == "__main__":
-    FILE_NAME = "input.txt"  # 3574690
+    FILE_NAME = "input.txt"  # pt1: 3574690 pt2: 22565391
     FILE_NAME_EXAMPLE = "input-example.txt"  # 11
 
     try:
