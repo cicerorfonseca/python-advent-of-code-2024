@@ -60,17 +60,45 @@ def calculate_total(number_pairs: tuple[list[int], list[int]]) -> int:
 
     return sum(abs(left - right) for left, right in zip(left_nums, right_nums))
 
+def calculate_similarity(number_pairs: tuple[list[int], list[int]]) -> int:
+    """Calculate the similarity score by adding up each number from the left side
+    after multiplying it by the number of times the number appears in the right side
+
+    Args:
+        number_pairs (tuple[list[int], list[int]]): Tuple containing two lists of integers:
+            - First list: Left numbers to be paired
+            - Second list: Right numbers to be paired
+
+    Returns:
+        int: Sum of the similarity score of each number on the left list
+    """
+    left_nums, right_nums = number_pairs
+    similarity_score = 0
+
+    for i, left_num in enumerate(left_nums):
+        num_count = 0
+
+        for right_num in right_nums:
+            if left_num == right_num:
+                num_count += 1
+            
+        similarity_score += left_num * num_count
+
+    return similarity_score
+
 
 if __name__ == "__main__":
     FILE_NAME = "input.txt"  # 3574690
-    FILENAME_EXAMPLE = "input-example.txt"  # 11
+    FILE_NAME_EXAMPLE = "input-example.txt"  # 11
 
     try:
         input_content = read_input(FILE_NAME)
         number_pairs = compute_input(input_content)
         result = calculate_total(number_pairs)
+        similarity_score = calculate_similarity(number_pairs)
 
         print(result)
+        print(similarity_score)
     except Exception as e:
         print(f"Program failed: {e}")
 
