@@ -1,24 +1,11 @@
-def read_input(file_path: str) -> list[str]:
-    """Read lines from a file and return the content as a list
+import os
+import sys
 
-    Args:
-      file_path (str): Path to the input file
+# Add the root directory to sys.path dynamically
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-    Returns:
-      list[str]: List of strings, each item as a line from the file
-
-    Raises:
-      FileNotFoundError: If the file does not exist
-      PermissionError: If the file cannot be accessed
-    """
-    try:
-        with open(file_path) as file:
-            return file.readlines()
-    except (FileNotFoundError, PermissionError) as e:
-        print(f"Error reading file {file_path}: {e}")
-
-        raise
-
+# Import helpers
+from utils import read_input
 
 def compute_input(input_content: list[str]) -> tuple[list[int], list[int]]:
     """Parse input lines and split numbers into two lists
@@ -86,11 +73,13 @@ def calculate_similarity(number_pairs: tuple[list[int], list[int]]) -> int:
 
 
 if __name__ == "__main__":
-    FILE_NAME = "input.txt"  # pt1: 3574690 pt2: 22565391
-    FILE_NAME_EXAMPLE = "input-example.txt"  # 11
+    dirname = os.path.dirname(__file__)
+    FILE_NAME = "./input.txt"  # pt1: 3574690 pt2: 22565391
+    FILE_NAME_EXAMPLE = "/input-example.txt"  # 11
+    FILE_PATH = os.path.join(dirname, FILE_NAME)
 
     try:
-        input_content = read_input(FILE_NAME)
+        input_content = read_input(FILE_PATH)
         number_pairs = compute_input(input_content)
         result = calculate_total(number_pairs)
         similarity_score = calculate_similarity(number_pairs)
